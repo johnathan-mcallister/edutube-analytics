@@ -34,11 +34,11 @@ The YouTube key exists only in the backend container and is never sent to the br
 
 The checked-in `Jenkinsfile` validates both images, builds the Compose application, deploys it in place, waits for all services to become healthy, and smoke-tests the API through the frontend proxy.
 
-Prepare at least one Linux Jenkins agent with:
+Prepare at least one Windows Jenkins agent with:
 
 - Docker Engine with the Compose v2 plugin
 - permission for the Jenkins user to use Docker
-- `wget` available on the agent
+- Windows PowerShell available on the agent
 
 Create these Jenkins **Secret text** credentials:
 
