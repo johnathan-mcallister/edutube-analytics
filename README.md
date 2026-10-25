@@ -34,9 +34,8 @@ The YouTube key exists only in the backend container and is never sent to the br
 
 The checked-in `Jenkinsfile` validates both images, builds the Compose application, deploys it in place, waits for all services to become healthy, and smoke-tests the API through the frontend proxy.
 
-Prepare a Linux Jenkins agent with:
+Prepare at least one Linux Jenkins agent with:
 
-- the label `docker`
 - Docker Engine with the Compose v2 plugin
 - permission for the Jenkins user to use Docker
 - `wget` available on the agent
@@ -48,4 +47,4 @@ Create these Jenkins **Secret text** credentials:
 
 Create a Pipeline or Multibranch Pipeline pointed at this repository and use `Jenkinsfile` as its script path. The deployment is exposed on port `8080` of that agent. Builds reuse the named `edutube-analytics` Compose project and its PostgreSQL volume, so a deployment updates the containers without discarding stored video data.
 
-For a remote production host, assign the `docker` label to that host's Jenkins agent. The pipeline deliberately deploys on the selected agent instead of copying credentials or Docker context over SSH.
+The pipeline uses any available Jenkins agent and verifies Docker and Compose before building. If you have multiple agents, replace `agent any` in the `Jenkinsfile` with the label assigned to the intended deployment host. The pipeline deliberately deploys on the selected agent instead of copying credentials or Docker context over SSH.

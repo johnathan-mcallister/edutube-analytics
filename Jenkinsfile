@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'docker' }
+  agent any
 
   options {
     disableConcurrentBuilds()
@@ -13,6 +13,13 @@ pipeline {
   }
 
   stages {
+    stage('Prerequisites') {
+      steps {
+        sh 'docker version'
+        sh 'docker compose version'
+      }
+    }
+
     stage('Checkout') {
       steps { checkout scm }
     }
