@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS videos (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  channel TEXT NOT NULL,
+  category_id TEXT,
+  category TEXT,
+  published_at TIMESTAMPTZ NOT NULL,
+  duration_minutes DOUBLE PRECISION NOT NULL,
+  views BIGINT NOT NULL DEFAULT 0,
+  likes BIGINT NOT NULL DEFAULT 0,
+  comments BIGINT NOT NULL DEFAULT 0,
+  query TEXT NOT NULL,
+  collected_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

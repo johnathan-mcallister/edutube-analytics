@@ -1,0 +1,51 @@
+services:
+  frontend:
+    image: edutube-frontend:${IMAGE_TAG:-local}
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    image: edutube-backend:${IMAGE_TAG:-local}
+    build: ./server
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-edutube}:${POSTGRES_PASSWORD:-change_me}@db:5432/${POSTGRES_DB:-edutube}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-edutube}
+      POSTGRES_USER: ${POSTGRES_USER:-edutube}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-edutube} -d ${POSTGRES_DB:-edutube}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
