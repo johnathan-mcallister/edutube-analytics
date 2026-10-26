@@ -9,7 +9,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/api/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/api/health"]
       interval: 10s
       timeout: 3s
       retries: 10
@@ -20,7 +20,7 @@ services:
     environment:
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-edutube}:${POSTGRES_PASSWORD:-change_me}@db:5432/${POSTGRES_DB:-edutube}
-      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy
