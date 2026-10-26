@@ -35,7 +35,7 @@ pipeline {
     stage('Deploy') {
       steps {
         withCredentials([
-          string(credentialsId: 'edutube-youtube-api-key', variable: 'YOUTUBE_API_KEY'),
+          string(credentialsId: 'Youtube-Api-Key', variable: 'YOUTUBE_API_KEY'),
           string(credentialsId: 'edutube-postgres-password', variable: 'POSTGRES_PASSWORD')
         ]) {
           bat 'docker compose up --detach --remove-orphans --wait --wait-timeout 120'
