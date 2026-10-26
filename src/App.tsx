@@ -50,8 +50,8 @@ export function App() {
   }
 
   return <main>
-    <header><div><span className="eyebrow">EDUTUBE RESEARCH BOARD</span><h1>Video engagement analysis</h1><p>Collect a broad learning dataset, then explore how length and category relate to engagement.</p></div><span className="chalk-mark">500</span></header>
-    <form className="collector" onSubmit={collect}><label htmlFor="topic">YouTube search topic</label><div><input id="topic" value={query} onChange={(event) => setQuery(event.target.value)} required /><button disabled={busy}>{busy ? 'Collecting…' : 'Collect up to 500 videos'}</button></div><small aria-live="polite">{status}</small></form>
+    <header><div><span className="eyebrow">EDUTUBE RESEARCH BOARD</span><h1>Video engagement analysis</h1><p>Collect a broad learning dataset, then explore how length and category relate to engagement.</p></div></header>
+    <form className="collector" onSubmit={collect}><label htmlFor="topic">YouTube search topic</label><div><input id="topic" value={query} onChange={(event) => setQuery(event.target.value)} required /><button disabled={busy}>{busy ? 'Searching…' : 'Search'}</button></div><small aria-live="polite">{status}</small></form>
 
     {videos.length > 0 ? <>
       <section className="filters card"><div className="filter-head"><div><h2>Filter the board</h2><p>Use the duration controls here and the category pie chart below.</p></div><button className="clear" onClick={() => { setSelectedCategories([]); setMinLength(0); setMaxLength(absoluteMax) }}>Clear filters</button></div><div className="range-grid"><label>Minimum length <strong>{minLength} min</strong><input type="range" min="0" max={absoluteMax} value={minLength} onChange={(event) => setMinLength(Math.min(Number(event.target.value), maxLength))} /></label><label>Maximum length <strong>{maxLength} min</strong><input type="range" min="0" max={absoluteMax} value={maxLength} onChange={(event) => setMaxLength(Math.max(Number(event.target.value), minLength))} /></label></div></section>
